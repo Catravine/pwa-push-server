@@ -1,58 +1,63 @@
-// Modules
+//  Modules
 const http = require('http')
 const push = require('./push')
 
-// Create HTTP Server
-http.createServer( (request, response) => {
+// Create HTTP serviceWorker
+http.createServer((request, response) =>{
 
-  // Enable CORS
-  response.setHeader('Access-Control-Allow-Origin', '*')
+    // Enable CORS
+    response.setHeader('Access-Control-Allow-Origin', '*')
 
-  // Get request vars
-  const { url, method } = request
+    // Get request vars
+    const { url, method } = request
 
-  // Subscribe
-  if ( method === 'POST' && url.match(/^\/subscribe\/?/) ) {
 
-    // Get POST Body
-    let body = []
+    // subscribe
+    if (method === 'POST' && url.match(/^\/subscribe\/?/)) {
 
-    // Read body stream
-    request.on( 'data', chunk => body.push(chunk) ).on( 'end', () => {
+        // Get POST body
+        let body = []
 
-      // Parse subscription body to object
-      let subscription = JSON.parse(body.toString())
+        // Read body stream
+        request.on('data', chunk => body.push(chunk)).on('end', () => {
 
-      // Store subscription for push notifications
-      push.addSubscription( subscription )
+            // Parse subscription body to object
+            let subscription = JSON.parse(body.toString())
 
-      // Respond
-      response.end('Subscribed')
-    })
+            // Store subscription for push Notifications
+            push.addSubscription(subscription)
 
-  // Public Key
-  } else if ( url.match(/^\/key\/?/) ) {
+            // Respond
+            response.end('Subscribed')
+        })
 
-    // Respond with public key from push module
-    response.end( push.getKey() )
+    // Public key
+    } else if (url.match(/^\/key\/?/)) {
 
-  // Push Notification
-  } else if ( method === 'POST' && url.match(/^\/push\/?/) ) {
+        // Respond with public key from push module
+        response.end(push.getKey())
 
-    // Get POST Body
-    let body = []
+    // Push Notifications
+    } else if (method === 'POST' && url.match(/^\/push\/?/)) {
 
-    // Read body stream
-    request.on( 'data', chunk => body.push(chunk) ).on( 'end', () => {
+        // Get POST body
+        let body = []
 
-      response.end('Push Sent')
-    })
-  // Not Found
-} else {
+        // Read body stream
+        request.on('data', chunk => body.push(chunk)).on('end', () => {
 
-  response.status = 404
-  response.end('Error: Unknown Request')
-}
+            // Send Notifications ith POST body
+            push.send(body.toString())
 
-// Start the Server
-}).listen( 3333, () => { console.log('Server Running') })
+            // Respond
+            response.end('Push Sent')
+        })
+
+    // Not found
+    } else {
+        response.status = 404
+        respone.end('Error: Unkown Request')
+    }
+
+// listen for response
+}).listen(3333, () => { console.log('Server Running')});

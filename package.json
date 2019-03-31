@@ -12,11 +12,11 @@
     "pwa",
     "push-server"
   ],
-  "author": "Your Name <email@gmail.com>",
+  "author": "Caroline Courtney <caroline@carolinecourtney.com>",
   "license": "ISC",
   "dependencies": {
     "node-storage": "0.0.7",
     "urlsafe-base64": "^1.0.0",
-    "web-push": "^3.2.4"
+    "web-push": "^3.3.3"
   }
 }
