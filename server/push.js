@@ -40,5 +40,8 @@ module.exports.send = (message) => {
 
         // Send Notification
         webpush.sendNotifications(subscription, message)
+            .catch(status => {
+                console.log(status.statusCode)
+            })
     })
 }
