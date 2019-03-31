@@ -24,4 +24,4 @@ navigator.serviceWorker.register('sw.js').then(registration => {
     // log errors
 }).catch(console.error);
 
-fetch('http://localhost:3333').then(res => res.text()).then(console.log)
+fetch('http://localhost:3333/key').then(res => res.text()).then(console.log)
